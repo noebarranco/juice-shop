@@ -10,11 +10,17 @@ jobs:
     name: SonarCloud Scan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6  # Updated to v6 for Node 24 support
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0 
+          
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+        # This is the new consolidated action that replaces 'sonarcloud-github-action'
+        uses: SonarSource/sonarqube-scan-action@v5
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.organization=noebarranco
+            -Dsonar.projectKey=noebarranco_juice-shop
